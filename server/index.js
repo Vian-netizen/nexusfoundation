@@ -1,13 +1,34 @@
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import { resolveClearanceFromRoles } from "./lib/clearanceResolver.js";
 
-export const handler = async (event) => {
-  const code = event.queryStringParameters?.code;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+const distPath = path.join(__dirname, "..", "dist");
+
+app.use(express.static(distPath));
+
+app.get("/auth/discord/login", (req, res) => {
+  const params = new URLSearchParams({
+    client_id: process.env.DISCORD_CLIENT_ID,
+    response_type: "code",
+    redirect_uri: process.env.DISCORD_REDIRECT_URI,
+    scope: "identify guilds"
+  });
+
+  res.redirect(`https://discord.com/oauth2/authorize?${params.toString()}`);
+});
+
+app.get("/auth/discord/callback", async (req, res) => {
+  const code = req.query.code;
 
   if (!code) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Missing OAuth code" })
-    };
+    return res.status(400).json({ error: "Missing OAuth code" });
   }
 
   try {
@@ -28,13 +49,10 @@ export const handler = async (event) => {
     const token = await tokenResponse.json();
 
     if (!token.access_token) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "Failed to obtain Discord access token",
-          discord: token
-        })
-      };
+      return res.status(500).json({
+        error: "Failed to obtain Discord access token",
+        discord: token
+      });
     }
 
     const userResponse = await fetch("https://discord.com/api/users/@me", {
@@ -55,12 +73,9 @@ export const handler = async (event) => {
     );
 
     if (!memberResponse.ok) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({
-          error: "User is not a member of the Discord server."
-        })
-      };
+      return res.status(403).json({
+        error: "User is not a member of the Discord server."
+      });
     }
 
     const member = await memberResponse.json();
@@ -74,21 +89,21 @@ export const handler = async (event) => {
 
     const frontend =
       process.env.DISCORD_FRONTEND_URL ||
-      "https://nexusfoundation.netlify.app";
+      `${req.protocol}://${req.get("host")}`;
 
-    return {
-      statusCode: 302,
-      headers: {
-        Location: `${frontend}/?${params.toString()}`
-      }
-    };
+    return res.redirect(`${frontend}/?${params.toString()}`);
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Discord callback failed",
-        message: err.message
-      })
-    };
+    return res.status(500).json({
+      error: "Discord callback failed",
+      message: err.message
+    });
   }
-};
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

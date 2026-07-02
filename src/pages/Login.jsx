@@ -13,7 +13,7 @@ export default function Login() {
 
   const handleDiscord = () => {
     setLoading(true);
-    window.location.href = "/.netlify/functions/discord-login";
+    window.location.href = "/auth/discord/login";
   };
 
   return (
