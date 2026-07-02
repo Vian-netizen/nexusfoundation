@@ -94,20 +94,10 @@ export const handler = async (event) => {
       "https://nexusfoundation.netlify.app";
 
     return {
-      statusCode: 200,
-      headers: {
-       "Content-Type": "application/json"
-     },
-     body: JSON.stringify(
-        {
-          discordUser: user.username,
-          discordId: user.id,
-         roles: member.roles,
-         clearance: clearance
-        },
-        null,
-        2
-     )
+      statusCode: 302,
+     headers: {
+       Location: `${frontend}/?${params.toString()}`
+      }
 };
   } catch (err) {
     console.error(err);
