@@ -1,0 +1,62 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "event_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "Operation",
+        "Training",
+        "Meeting",
+        "Social",
+        "Drill",
+        "Other"
+      ]
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Level 0",
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5",
+        "O5",
+        "Administrator"
+      ],
+      "default": "Level 1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Scheduled",
+        "Active",
+        "Completed",
+        "Cancelled"
+      ],
+      "default": "Scheduled"
+    },
+    "organizer_name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "event_date"
+  ]
+}

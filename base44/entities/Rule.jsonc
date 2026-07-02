@@ -1,0 +1,56 @@
+{
+  "name": "Rule",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Community Rules",
+        "RP Rules",
+        "Department SOPs",
+        "Staff Guidelines",
+        "Security Procedures",
+        "Code of Conduct"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "description": "Rich text content"
+    },
+    "order_index": {
+      "type": "number",
+      "default": 0
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Level 0",
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5",
+        "O5",
+        "Administrator"
+      ],
+      "default": "Public"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "Draft",
+        "Archived"
+      ],
+      "default": "Active"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

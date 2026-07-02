@@ -1,0 +1,87 @@
+{
+  "name": "Personnel",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "rank": {
+      "type": "string"
+    },
+    "position": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string"
+    },
+    "division": {
+      "type": "string"
+    },
+    "task_force": {
+      "type": "string"
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Level 0",
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5",
+        "O5",
+        "Administrator"
+      ],
+      "default": "Level 1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "Reserve",
+        "KIA",
+        "MIA",
+        "Retired",
+        "Suspended",
+        "Terminated",
+        "Deceased"
+      ],
+      "default": "Active"
+    },
+    "biography": {
+      "type": "string"
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "discord_username": {
+      "type": "string"
+    },
+    "awards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "join_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "superior_id": {
+      "type": "string",
+      "description": "ID of superior officer"
+    },
+    "user_id": {
+      "type": "string",
+      "description": "Linked user account ID"
+    }
+  },
+  "required": [
+    "name",
+    "rank",
+    "clearance_level",
+    "status"
+  ]
+}

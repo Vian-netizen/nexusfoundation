@@ -1,0 +1,90 @@
+{
+  "name": "SecureDocument",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "Intelligence Report",
+        "Operation Briefing",
+        "Mission Report",
+        "Research Paper",
+        "Internal Memorandum",
+        "Directive",
+        "Incident Report"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "description": "Rich text content"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "Unclassified",
+        "Restricted",
+        "Confidential",
+        "Secret",
+        "Top Secret",
+        "Eyes Only"
+      ]
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Level 0",
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5",
+        "O5",
+        "Administrator"
+      ],
+      "default": "Level 1"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "attachment_urls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Draft",
+        "Published",
+        "Archived",
+        "Redacted"
+      ],
+      "default": "Draft"
+    },
+    "version": {
+      "type": "number",
+      "default": 1
+    },
+    "department": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "document_type",
+    "clearance_level"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Normal",
+        "High",
+        "Critical"
+      ],
+      "default": "Normal"
+    },
+    "clearance_level": {
+      "type": "string",
+      "enum": [
+        "Public",
+        "Level 0",
+        "Level 1",
+        "Level 2",
+        "Level 3",
+        "Level 4",
+        "Level 5",
+        "O5",
+        "Administrator"
+      ],
+      "default": "Public"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "pinned": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "Archived"
+      ],
+      "default": "Active"
+    }
+  },
+  "required": [
+    "title",
+    "content"
+  ]
+}
