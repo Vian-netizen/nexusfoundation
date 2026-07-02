@@ -26,9 +26,28 @@ export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthe
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     }
-    return unauthenticatedElement;
   }
 
+  // -------------------------------
+  // ADD THIS (Discord override layer)
+  // -------------------------------
+  const params = new URLSearchParams(window.location.search);
+
+  const discordUid = params.get('uid') || localStorage.getItem('uid');
+  const discordClearance = params.get('clearance') || localStorage.getItem('clearance');
+
+  if (discordUid) {
+    localStorage.setItem('uid', discordUid);
+    if (discordClearance) {
+      localStorage.setItem('clearance', discordClearance);
+    }
+
+    return <Outlet />;
+  }
+
+  // -------------------------------
+  // fallback to Base44 auth
+  // -------------------------------
   if (!isAuthenticated) {
     return unauthenticatedElement;
   }
