@@ -190,4 +190,3 @@ export default function Sidebar({ user, clearanceLevel, isAdmin }) {
       </aside>
     </>
   );
-}
