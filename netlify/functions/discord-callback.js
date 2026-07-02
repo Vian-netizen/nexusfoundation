@@ -76,7 +76,12 @@ export const handler = async (event) => {
 
     const member = await memberResponse.json();
 
+    console.log("Discord member:", JSON.stringify(member, null, 2));
+    console.log("Roles:", member.roles);
+
     const clearance = resolveClearanceFromRoles(member.roles);
+
+    console.log("Resolved clearance:", clearance);
 
     const params = new URLSearchParams({
       uid: user.id,
@@ -89,11 +94,21 @@ export const handler = async (event) => {
       "https://nexusfoundation.netlify.app";
 
     return {
-      statusCode: 302,
+      statusCode: 200,
       headers: {
-        Location: `${frontend}/?${params.toString()}`
-      }
-    };
+       "Content-Type": "application/json"
+     },
+     body: JSON.stringify(
+        {
+          discordUser: user.username,
+          discordId: user.id,
+         roles: member.roles,
+         clearance: clearance
+        },
+        null,
+        2
+     )
+};
   } catch (err) {
     console.error(err);
 
