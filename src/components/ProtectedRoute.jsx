@@ -1,5 +1,4 @@
 import { Outlet, useLocation } from "react-router-dom";
-import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 
 const DefaultFallback = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -19,13 +18,21 @@ export default function ProtectedRoute({
     params.get("uid") ||
     localStorage.getItem("uid");
 
+  const username =
+    params.get("username") ||
+    localStorage.getItem("username");
+
   const clearance =
     params.get("clearance") ||
     localStorage.getItem("clearance");
 
-  // Save session once
+  // Save session
   if (uid) {
     localStorage.setItem("uid", uid);
+  }
+
+  if (username) {
+    localStorage.setItem("username", username);
   }
 
   if (clearance) {
