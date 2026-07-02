@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import { useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { Outlet, useLocation } from "react-router-dom";
+import UserNotRegisteredError from "@/components/UserNotRegisteredError";
 
 const DefaultFallback = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -9,46 +7,32 @@ const DefaultFallback = () => (
   </div>
 );
 
-export default function ProtectedRoute({ fallback = <DefaultFallback />, unauthenticatedElement }) {
-  const { isAuthenticated, isLoadingAuth, authChecked, authError, checkUserAuth } = useAuth();
+export default function ProtectedRoute({
+  fallback = <DefaultFallback />,
+  unauthenticatedElement
+}) {
+  const location = useLocation();
 
-  useEffect(() => {
-    if (!authChecked && !isLoadingAuth) {
-      checkUserAuth();
-    }
-  }, [authChecked, isLoadingAuth, checkUserAuth]);
+  const params = new URLSearchParams(location.search);
 
-  if (isLoadingAuth || !authChecked) {
-    return fallback;
+  const uid =
+    params.get("uid") ||
+    localStorage.getItem("uid");
+
+  const clearance =
+    params.get("clearance") ||
+    localStorage.getItem("clearance");
+
+  // Save session once
+  if (uid) {
+    localStorage.setItem("uid", uid);
   }
 
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    }
+  if (clearance) {
+    localStorage.setItem("clearance", clearance);
   }
 
-  // -------------------------------
-  // ADD THIS (Discord override layer)
-  // -------------------------------
-  const params = new URLSearchParams(window.location.search);
-
-  const discordUid = params.get('uid') || localStorage.getItem('uid');
-  const discordClearance = params.get('clearance') || localStorage.getItem('clearance');
-
-  if (discordUid) {
-    localStorage.setItem('uid', discordUid);
-    if (discordClearance) {
-      localStorage.setItem('clearance', discordClearance);
-    }
-
-    return <Outlet />;
-  }
-
-  // -------------------------------
-  // fallback to Base44 auth
-  // -------------------------------
-  if (!isAuthenticated) {
+  if (!uid) {
     return unauthenticatedElement;
   }
 

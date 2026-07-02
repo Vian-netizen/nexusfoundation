@@ -33,7 +33,13 @@ export default function Sidebar({ user, clearanceLevel, isAdmin }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
-    db.auth.logout("/login");
+    localStorage.removeItem("uid");
+    localStorage.removeItem("username");
+    localStorage.removeItem("clearance");
+    localStorage.removeItem("loginTime");
+
+    window.location.href = "/login";
+};
   };
 
   const SidebarContent = () => (
