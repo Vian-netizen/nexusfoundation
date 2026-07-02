@@ -39,7 +39,6 @@ export default function Sidebar({ user, clearanceLevel, isAdmin }) {
     localStorage.removeItem("loginTime");
 
     window.location.href = "/login";
-};
   };
 
   const SidebarContent = () => (
@@ -190,3 +189,4 @@ export default function Sidebar({ user, clearanceLevel, isAdmin }) {
       </aside>
     </>
   );
+}
